@@ -9,6 +9,7 @@ $errorColor: #801111;
 
 * {
     user-select: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 @mixin center {
