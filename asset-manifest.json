@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/custom-slider/static/css/main.4c49fd14.css",
+    "main.js": "/custom-slider/static/js/main.7cb6a9ce.js",
+    "index.html": "/custom-slider/index.html",
+    "static/media/loadingSpinner.svg": "/custom-slider/static/media/loadingSpinner.6b6c97079f26b684ef360ad2c5fc14a6.svg",
+    "main.4c49fd14.css.map": "/custom-slider/static/css/main.4c49fd14.css.map",
+    "main.7cb6a9ce.js.map": "/custom-slider/static/js/main.7cb6a9ce.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.4c49fd14.css",
+    "static/js/main.7cb6a9ce.js"
+  ]
+}
