@@ -7,6 +7,10 @@ $slideTextColor: #3a3d55;
 $successColor: #053505;
 $errorColor: #801111;
 
+* {
+    user-select: none;
+}
+
 @mixin center {
     display: flex;
     justify-content: center;
@@ -17,7 +21,7 @@ $errorColor: #801111;
     position: relative;
     margin: 20px;
     background-color: #ffffff4d;
-    width: 80%;
+    width: 90%;
     height: 80px;
     border-radius: 40px;
     @include center;
@@ -41,7 +45,6 @@ $errorColor: #801111;
 
 .icon {
     color: $slideBallIconColor;
-    user-select: none;
     &.loading {
         height: 60%;
         animation: spin 1s infinite linear;
@@ -67,11 +70,17 @@ $errorColor: #801111;
     color: $slideTextColor;
     font-size: 24px;
     text-transform: uppercase;
-    user-select: none;
     &.success {
         color: $successColor;
     }
     &.error {
         color: $errorColor;
+    }
+}
+
+@media screen and (max-width: 580px) {
+    .slider-container {
+        padding-left: 100px;
+        justify-content: flex-start;
     }
 }
