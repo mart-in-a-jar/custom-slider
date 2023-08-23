@@ -1,7 +1,8 @@
 import "./Slider.scss";
 import Icon from "@mdi/react";
-import { mdiLock, mdiLockOpen } from "@mdi/js";
+import { mdiLock, mdiLockOpen, mdiLoading } from "@mdi/js";
 import { useCallback, useEffect, useRef, useState } from "react";
+import loadingSpinner from "./loadingSpinner.svg";
 
 export const Slider = ({ action, text }) => {
     const [mouseIsDown, setMouseIsDown] = useState(false);
@@ -9,6 +10,7 @@ export const Slider = ({ action, text }) => {
     const [dragStartPosition, setDragStartPosition] = useState(null);
     const [isUnlocked, setIsUnlocked] = useState(false);
     const [shouldScale, setShouldScale] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const sliderContainerRef = useRef(null);
     const sliderRef = useRef(null);
@@ -24,12 +26,13 @@ export const Slider = ({ action, text }) => {
     }, [mouseIsDown]);
 
     useEffect(() => {
-        if (isUnlocked) {
-            // loading
-            // await
-            action();
-            // stop loading
-        }
+        (async () => {
+            if (isUnlocked) {
+                setIsLoading(true);
+                await action();
+                setIsLoading(false);
+            }
+        })();
     }, [isUnlocked, action]);
 
     const handleTouchStart = (e) => {
@@ -82,13 +85,6 @@ export const Slider = ({ action, text }) => {
             setTimeout(() => {
                 setIsUnlocked(true);
             }, 0);
-
-            // trigger action
-            // when action is complete
-            // add class for unlocked
-            // add onClick for remove class
-            // change icon
-            // in onclick function -> remove onClick function
         },
         [dragStartPosition, totalTravelDistance]
     );
@@ -146,7 +142,13 @@ export const Slider = ({ action, text }) => {
                 onMouseDown={handleTouchStart}
                 onClick={handleClick}
             >
-                {isUnlocked || shouldScale ? (
+                {isLoading ? (
+                    <img
+                        src={loadingSpinner}
+                        alt="loading"
+                        className="icon loading"
+                    />
+                ) : isUnlocked || shouldScale ? (
                     <Icon path={mdiLockOpen} size={3} className="icon" />
                 ) : (
                     <Icon path={mdiLock} size={3} className="icon" />

@@ -30,16 +30,28 @@ $slideTextColor: #3a3d55;
     border-radius: 50%;
     cursor: pointer;
     @include center;
-}
-
-.slider.unlocked {
-    width: 100%;
-    height: inherit;
-    border-radius: inherit;
+    &.unlocked {
+        width: 100%;
+        height: inherit;
+        border-radius: inherit;
+    }
 }
 
 .icon {
     color: $slideBallIconColor;
+    &.loading {
+        height: 60%;
+        animation: spin 1s infinite linear;
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .text {
