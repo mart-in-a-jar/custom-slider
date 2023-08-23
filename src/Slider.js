@@ -1,16 +1,29 @@
-import "./Slider.scss";
+import { mdiLock, mdiLockOpen, mdiCheckBold, mdiCloseThick } from "@mdi/js";
 import Icon from "@mdi/react";
-import { mdiLock, mdiLockOpen, mdiLoading } from "@mdi/js";
 import { useCallback, useEffect, useRef, useState } from "react";
+import "./Slider.scss";
 import loadingSpinner from "./loadingSpinner.svg";
 
-export const Slider = ({ action, text }) => {
+const callAction = async (action) => {
+    try {
+        const result = await action();
+        console.log(result);
+        return result === "Success";
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
+};
+
+// clickAway means you have to manually "reset" slider
+export const Slider = ({ action, text, clickAway = false, gradient }) => {
     const [mouseIsDown, setMouseIsDown] = useState(false);
     const [totalTravelDistance, setTotalTravelDistance] = useState(null);
     const [dragStartPosition, setDragStartPosition] = useState(null);
     const [isUnlocked, setIsUnlocked] = useState(false);
     const [shouldScale, setShouldScale] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [status, setstatus] = useState(null);
 
     const sliderContainerRef = useRef(null);
     const sliderRef = useRef(null);
@@ -26,14 +39,34 @@ export const Slider = ({ action, text }) => {
     }, [mouseIsDown]);
 
     useEffect(() => {
+        if (!isUnlocked) return;
         (async () => {
-            if (isUnlocked) {
-                setIsLoading(true);
-                await action();
-                setIsLoading(false);
+            setIsLoading(true);
+
+            // display result for a time
+            if (await callAction(action)) {
+                setstatus({ success: true, text: "Door opened!" });
+            } else {
+                setstatus({
+                    success: false,
+                    text: "Something went wrong!",
+                });
+            }
+            if (!clickAway) {
+                setTimeout(() => {
+                    setstatus(null);
+                }, 2500);
+            }
+
+            setIsLoading(false);
+
+            textRef.current.style.opacity = 1;
+
+            if (!clickAway) {
+                setIsUnlocked(false);
             }
         })();
-    }, [isUnlocked, action]);
+    }, [isUnlocked]);
 
     const handleTouchStart = (e) => {
         setMouseIsDown(true);
@@ -64,7 +97,13 @@ export const Slider = ({ action, text }) => {
             }
             setShouldScale(false);
             moveSlider(movement);
-            textRef.current.style.opacity = 1 - movement / totalTravelDistance;
+            const portionMoved = movement / totalTravelDistance;
+            textRef.current.style.opacity = 1 - portionMoved;
+            if (gradient) {
+                sliderContainerRef.current.style.background = `linear-gradient(90deg, ${gradientColor} ${
+                    portionMoved * 100
+                }%, ${bgColor} ${portionMoved * 100}%)`;
+            }
         },
         [dragStartPosition, totalTravelDistance]
     );
@@ -75,10 +114,13 @@ export const Slider = ({ action, text }) => {
             setMouseIsDown(false);
             const pos = e.clientX || e.changedTouches[0].clientX;
             const movement = pos - dragStartPosition;
+            if (gradient) {
+                sliderContainerRef.current.style.background = bgColor;
+            }
             // when released before end of slider
             if (movement < totalTravelDistance) {
-                sliderRef.current.style.left = `${sliderOffset}px`;
                 textRef.current.style.opacity = 1;
+                sliderRef.current.style.left = `${sliderOffset}px`;
                 return;
             }
             // when released at end of slider
@@ -91,8 +133,11 @@ export const Slider = ({ action, text }) => {
 
     // When unlocked, to reset slider
     const handleClick = () => {
-        if (!isUnlocked) return;
+        if (!isUnlocked || !clickAway) return;
         setIsUnlocked(false);
+        setTimeout(() => {
+            setstatus(null);
+        }, 2500);
     };
 
     const moveSlider = (pos) => {
@@ -126,13 +171,19 @@ export const Slider = ({ action, text }) => {
     };
 
     const textStyles = {
-        transition: !mouseIsDown ? "opacity .5s ease-in" : "",
+        transition: !mouseIsDown ? "opacity .5s ease-in, color .7s ease" : "",
     };
 
     return (
         <div className="slider-container" ref={sliderContainerRef}>
-            <span className="text" ref={textRef} style={textStyles}>
-                {text}
+            <span
+                className={`text${
+                    status ? (status.success ? " success" : " error") : ""
+                }`}
+                ref={textRef}
+                style={textStyles}
+            >
+                {status?.text || text}
             </span>
             <div
                 className={`slider${isUnlocked ? " unlocked" : ""}`}
@@ -148,6 +199,20 @@ export const Slider = ({ action, text }) => {
                         alt="loading"
                         className="icon loading"
                     />
+                ) : status ? (
+                    status.success ? (
+                        <Icon
+                            path={mdiCheckBold}
+                            size={3}
+                            className="icon success"
+                        />
+                    ) : (
+                        <Icon
+                            path={mdiCloseThick}
+                            size={3}
+                            className="icon error"
+                        />
+                    )
                 ) : isUnlocked || shouldScale ? (
                     <Icon path={mdiLockOpen} size={3} className="icon" />
                 ) : (
@@ -159,3 +224,5 @@ export const Slider = ({ action, text }) => {
 };
 
 const sliderOffset = -10;
+const bgColor = "#ffffff4d";
+const gradientColor = "#1e2135";
