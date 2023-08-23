@@ -35,7 +35,7 @@ function App() {
                         }}
                         key={i}
                         clickAway={i === 3}
-                        gradient={i === 2}
+                        gradient={!(i > 3)}
                     />
                 );
             })}

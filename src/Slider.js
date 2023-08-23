@@ -16,7 +16,7 @@ const callAction = async (action) => {
 };
 
 // clickAway means you have to manually "reset" slider
-export const Slider = ({ action, text, clickAway = false, gradient }) => {
+export const Slider = ({ action, text, clickAway = false, gradient=true }) => {
     const [mouseIsDown, setMouseIsDown] = useState(false);
     const [totalTravelDistance, setTotalTravelDistance] = useState(null);
     const [dragStartPosition, setDragStartPosition] = useState(null);
