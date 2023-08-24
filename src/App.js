@@ -29,7 +29,8 @@ function App() {
             {[...Array(5)].map((x, i) => {
                 return (
                     <Slider
-                        text={`Door ${i + 1}`}
+                        text={"Slide to unlock"}
+                        header={`Door ${i + 1}`}
                         action={async () => {
                             return await unlockAction(i + 1);
                         }}

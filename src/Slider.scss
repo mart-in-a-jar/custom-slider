@@ -2,8 +2,9 @@
 
 $slideBgColor: #ffffff4d;
 $slideBallColor: #ebebeb;
-$slideBallIconColor: rgb(9, 31, 59);
-$slideTextColor: #3a3d55;
+$slideBallIconColor: #091f3b;
+$slideTextColor: #4b4e64;
+$headerTextColor: #091f3b;
 $successColor: #053505;
 $errorColor: #801111;
 
@@ -22,7 +23,7 @@ $errorColor: #801111;
     position: relative;
     margin: 20px;
     background-color: #ffffff4d;
-    width: 90%;
+    // width: 90%;
     height: 80px;
     border-radius: 40px;
     @include center;
@@ -84,4 +85,19 @@ $errorColor: #801111;
         padding-left: 100px;
         justify-content: flex-start;
     }
+}
+
+.wrapper {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    &:first-child h2 {
+        margin-top: 30px;
+    }
+}
+
+h2 {
+    align-self: center;
+    margin: 0 0 -10px;
+    color: $headerTextColor;
 }

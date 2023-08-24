@@ -1,4 +1,9 @@
-import { mdiLock, mdiLockOpen, mdiCheckBold, mdiCloseThick } from "@mdi/js";
+import {
+    mdiLock,
+    mdiLockOpen,
+    mdiCheckBold,
+    mdiCloseThick,
+} from "@mdi/js";
 import Icon from "@mdi/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./Slider.scss";
@@ -16,7 +21,13 @@ const callAction = async (action) => {
 };
 
 // clickAway means you have to manually "reset" slider
-export const Slider = ({ action, text, clickAway = false, gradient=true }) => {
+export const Slider = ({
+    action,
+    text,
+    header,
+    clickAway = false,
+    gradient = true,
+}) => {
     const [mouseIsDown, setMouseIsDown] = useState(false);
     const [totalTravelDistance, setTotalTravelDistance] = useState(null);
     const [dragStartPosition, setDragStartPosition] = useState(null);
@@ -175,49 +186,52 @@ export const Slider = ({ action, text, clickAway = false, gradient=true }) => {
     };
 
     return (
-        <div className="slider-container" ref={sliderContainerRef}>
-            <span
-                className={`text${
-                    status ? (status.success ? " success" : " error") : ""
-                }`}
-                ref={textRef}
-                style={textStyles}
-            >
-                {status?.text || text}
-            </span>
-            <div
-                className={`slider${isUnlocked ? " unlocked" : ""}`}
-                ref={sliderRef}
-                style={sliderStyles}
-                onTouchStart={handleTouchStart}
-                onMouseDown={handleTouchStart}
-                onClick={handleClick}
-            >
-                {isLoading ? (
-                    <img
-                        src={loadingSpinner}
-                        alt="loading"
-                        className="icon loading"
-                    />
-                ) : status ? (
-                    status.success ? (
-                        <Icon
-                            path={mdiCheckBold}
-                            size={3}
-                            className="icon success"
+        <div className="wrapper">
+            <h2>{header}</h2>
+            <div className="slider-container" ref={sliderContainerRef}>
+                <span
+                    className={`text${
+                        status ? (status.success ? " success" : " error") : ""
+                    }`}
+                    ref={textRef}
+                    style={textStyles}
+                >
+                    {status?.text || text}
+                </span>
+                <div
+                    className={`slider${isUnlocked ? " unlocked" : ""}`}
+                    ref={sliderRef}
+                    style={sliderStyles}
+                    onTouchStart={handleTouchStart}
+                    onMouseDown={handleTouchStart}
+                    onClick={handleClick}
+                >
+                    {isLoading ? (
+                        <img
+                            src={loadingSpinner}
+                            alt="loading"
+                            className="icon loading"
                         />
+                    ) : status ? (
+                        status.success ? (
+                            <Icon
+                                path={mdiCheckBold}
+                                size={3}
+                                className="icon success"
+                            />
+                        ) : (
+                            <Icon
+                                path={mdiCloseThick}
+                                size={3}
+                                className="icon error"
+                            />
+                        )
+                    ) : isUnlocked || shouldScale ? (
+                        <Icon path={mdiLockOpen} size={3} className="icon" />
                     ) : (
-                        <Icon
-                            path={mdiCloseThick}
-                            size={3}
-                            className="icon error"
-                        />
-                    )
-                ) : isUnlocked || shouldScale ? (
-                    <Icon path={mdiLockOpen} size={3} className="icon" />
-                ) : (
-                    <Icon path={mdiLock} size={3} className="icon" />
-                )}
+                        <Icon path={mdiLock} size={3} className="icon" />
+                    )}
+                </div>
             </div>
         </div>
     );
