@@ -1,12 +1,12 @@
 {
   "files": {
-    "main.css": "/custom-slider/static/css/main.5ef65f16.css",
-    "main.js": "/custom-slider/static/js/main.400ed96c.js",
+    "main.css": "/custom-slider/static/css/main.6be5e08d.css",
+    "main.js": "/custom-slider/static/js/main.b9ce37e1.js",
     "index.html": "/custom-slider/index.html",
     "static/media/loadingSpinner.svg": "/custom-slider/static/media/loadingSpinner.6b6c97079f26b684ef360ad2c5fc14a6.svg"
   },
   "entrypoints": [
-    "static/css/main.5ef65f16.css",
-    "static/js/main.400ed96c.js"
+    "static/css/main.6be5e08d.css",
+    "static/js/main.b9ce37e1.js"
   ]
 }
