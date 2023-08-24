@@ -79,30 +79,10 @@ $errorColor: #801111;
     }
 }
 
-@media screen and (max-width: 800px) {
-    .arrows > *:nth-child(n + 4) {
-        visibility: hidden;
-    }
-}
-
-@media screen and (max-width: 670px) {
-    .arrows > *:nth-child(n + 3) {
-        visibility: hidden;
-    }
-}
-
 @media screen and (max-width: 580px) {
     .slider-container {
         padding-left: 100px;
         justify-content: flex-start;
-    }
-    .arrows > * {
-        &:nth-child(n + 2) {
-            visibility: visible;
-        }
-        &:nth-child(-n + 2) {
-            visibility: hidden;
-        }
     }
 }
 
@@ -130,12 +110,12 @@ $errorColor: #801111;
 
 @keyframes pulse {
     from {
-        opacity: 0.3;
+        opacity: .2;
     }
     25% {
-        opacity: 1;
+        opacity: .45;
     }
     to {
-        opacity: 0.3;
+        opacity: .2;
     }
 }
