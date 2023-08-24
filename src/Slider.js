@@ -1,4 +1,10 @@
-import { mdiLock, mdiLockOpen, mdiCheckBold, mdiCloseThick } from "@mdi/js";
+import {
+    mdiLock,
+    mdiLockOpen,
+    mdiCheckBold,
+    mdiCloseThick,
+    mdiChevronRight,
+} from "@mdi/js";
 import Icon from "@mdi/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./Slider.scss";
@@ -16,7 +22,12 @@ const callAction = async (action) => {
 };
 
 // clickAway means you have to manually "reset" slider
-export const Slider = ({ action, text, clickAway = false, gradient=true }) => {
+export const Slider = ({
+    action,
+    text,
+    clickAway = false,
+    gradient = true,
+}) => {
     const [mouseIsDown, setMouseIsDown] = useState(false);
     const [totalTravelDistance, setTotalTravelDistance] = useState(null);
     const [dragStartPosition, setDragStartPosition] = useState(null);
@@ -28,6 +39,7 @@ export const Slider = ({ action, text, clickAway = false, gradient=true }) => {
     const sliderContainerRef = useRef(null);
     const sliderRef = useRef(null);
     const textRef = useRef(null);
+    const indicatorRef = useRef(null);
 
     useEffect(() => {
         if (mouseIsDown) {
@@ -61,6 +73,7 @@ export const Slider = ({ action, text, clickAway = false, gradient=true }) => {
             setIsLoading(false);
 
             textRef.current.style.opacity = 1;
+            indicatorRef.current.style.opacity = 1;
 
             if (!clickAway) {
                 setIsUnlocked(false);
@@ -99,6 +112,7 @@ export const Slider = ({ action, text, clickAway = false, gradient=true }) => {
             moveSlider(movement);
             const portionMoved = movement / totalTravelDistance;
             textRef.current.style.opacity = 1 - portionMoved;
+            indicatorRef.current.style.opacity = 1 - portionMoved;
             if (gradient) {
                 sliderContainerRef.current.style.background = `linear-gradient(90deg, ${gradientColor} ${
                     portionMoved * 100
@@ -120,6 +134,7 @@ export const Slider = ({ action, text, clickAway = false, gradient=true }) => {
             // when released before end of slider
             if (movement < totalTravelDistance) {
                 textRef.current.style.opacity = 1;
+                indicatorRef.current.style.opacity = 1;
                 sliderRef.current.style.left = `${sliderOffset}px`;
                 return;
             }
@@ -185,6 +200,14 @@ export const Slider = ({ action, text, clickAway = false, gradient=true }) => {
             >
                 {status?.text || text}
             </span>
+            {!status && (
+                <span className="arrows" ref={indicatorRef}>
+                    <Icon path={mdiChevronRight} size={3} />
+                    <Icon path={mdiChevronRight} size={3} />
+                    <Icon path={mdiChevronRight} size={3} />
+                    <Icon path={mdiChevronRight} size={3} />
+                </span>
+            )}
             <div
                 className={`slider${isUnlocked ? " unlocked" : ""}`}
                 ref={sliderRef}
