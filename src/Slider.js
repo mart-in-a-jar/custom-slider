@@ -3,6 +3,7 @@ import {
     mdiLockOpen,
     mdiCheckBold,
     mdiCloseThick,
+    mdiChevronRight,
 } from "@mdi/js";
 import Icon from "@mdi/react";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -197,6 +198,12 @@ export const Slider = ({
                     style={textStyles}
                 >
                     {status?.text || text}
+                </span>
+                <span className="arrows">
+                    <Icon path={mdiChevronRight} size={3} />
+                    <Icon path={mdiChevronRight} size={3} />
+                    <Icon path={mdiChevronRight} size={3} />
+                    <Icon path={mdiChevronRight} size={3} />
                 </span>
                 <div
                     className={`slider${isUnlocked ? " unlocked" : ""}`}
