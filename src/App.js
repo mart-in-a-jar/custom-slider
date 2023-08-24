@@ -34,6 +34,7 @@ function App() {
                             return await unlockAction(i + 1);
                         }}
                         key={i}
+                        indicators
                         clickAway={i === 3}
                         gradient={!(i > 3)}
                     />

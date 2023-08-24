@@ -25,6 +25,7 @@ const callAction = async (action) => {
 export const Slider = ({
     action,
     text,
+    indicators,
     clickAway = false,
     gradient = true,
 }) => {
@@ -200,7 +201,7 @@ export const Slider = ({
             >
                 {status?.text || text}
             </span>
-            {!status && (
+            {indicators && !status && (
                 <span className="arrows" ref={indicatorRef}>
                     <Icon path={mdiChevronRight} size={3} />
                     <Icon path={mdiChevronRight} size={3} />
